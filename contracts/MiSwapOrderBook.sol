@@ -15,6 +15,8 @@ import {LibPayInfo} from "./libraries/LibPayInfo.sol";
 
 import {IMiSwapOrderBook} from "./interface/IMiSwapOrderBook.sol";
 import {IMiSwapVault} from "./interface/IMiSwapVault.sol";
+import {OrderStorage} from "./OrderStorage.sol";
+import {OrderValidator} from "./OrderValidator.sol";
 
 
 contract MiSwapOrderBook is 
@@ -23,7 +25,9 @@ contract MiSwapOrderBook is
     ContextUpgradeable,
     OwnableUpgradeable,
     ReentrancyGuardUpgradeable,
-    PausableUpgradeable
+    PausableUpgradeable,
+    OrderStorage,
+    OrderValidator
 {
     using LibTransferSafeUpgradeable for address;
 
@@ -39,10 +43,11 @@ contract MiSwapOrderBook is
     );
 
     event LogSkipOrder(OrderKey orderKey, uint64 salt);
+    event LogCancel(OrderKey indexed orderKey, address indexed maker);
+
 
     address private _vault;
 
-    mapping(OrderKey => uint256) public filledAmount;
 
     /**  @notice Initialize contract
     */
@@ -79,7 +84,8 @@ contract MiSwapOrderBook is
         __Ownable_init(_msgSender());
         __ReentrancyGuard_init();
         __Pausable_init();
-        //todo __OrderValidator_init & __ProtocolManager_init
+        __OrderValidator_init(EIP712Name, EIP712Version);
+        //todo  & __ProtocolManager_init
         
         setVault(newVault);
     }
@@ -168,6 +174,71 @@ contract MiSwapOrderBook is
 
     }
 
+    function cancelOrders(
+        OrderKey[] calldata orderKeys
+    ) 
+        external
+        override
+        whenNotPaused
+        nonReentrant 
+        returns (bool[] memory canceled )
+    {
+        canceled = new bool[](orderKeys.length);
+        for (uint256 i = 0; i < orderKeys.length; i++){
+            bool success = _cancelOrderTry(orderKeys[i]);
+            canceled[i] = success;
+        }
+    }
 
+    function _cancelOrderTry(
+        OrderKey orderKey
+    ) 
+        internal 
+        returns (bool success) 
+    { 
+        LibOrder.Order memory order = orders[orderKey].order;
+        if (
+            order.maker == _msgSender() &&
+            filledAmount[orderKey] < order.nft.amount // 已成交的订单数量严格小于挂单总量，这样订单才可以删除
+        ) {
+            OrderKey orderHash = LibOrder.hash(order);
+            _removeOrder(order);
+            // withdraw asset from vault
+            if (order.side == LibOrder.Side.List) {
+                IMiSwapVault(_vault).withdrawNFT(
+                    orderHash,
+                    order.maker,
+                    order.nft.collection,
+                    order.nft.tokenId
+                );
+            } else if (order.side == LibOrder.Side.Bid) {
+                uint256 availNFTAmount = order.nft.amount -
+                    filledAmount[orderKey];
+                IMiSwapVault(_vault).withdrawETH(
+                    orderHash,
+                    Price.unwrap(order.price) * availNFTAmount, // the withdraw amount of eth
+                    order.maker
+                );
+            }
+            _cancelOrder(orderKey);
+            success = true;
+            emit LogCancel(orderKey, order.maker);
+        } else {
+            emit LogSkipOrder(orderKey, order.salt);
+        }
+
+    }
+
+    function editOrders(LibOrder.EditDetail[] calldata editDetails) external payable returns (OrderKey[] memory orderKeys){
+        //todo
+    }
+
+    function matchOrders(LibOrder.MatchDetail[] calldata matchDetails) external payable returns (bool[] memory matched){
+        //todo
+    }
+
+    function matchOrder(LibOrder.Order calldata sellOrder, LibOrder.Order calldata buyOrder) external payable{
+        //todo
+    }
     
 }
