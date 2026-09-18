@@ -39,5 +39,40 @@ abstract contract OrderValidator is
     function _cancelOrder(OrderKey orderKey) internal {
         filledAmount[orderKey] = CANCELLED;
     }
+
+    function _validateOrder(
+        LibOrder.Order memory order,
+        bool isSkipExpiry
+    ) internal view {
+        // Order must have a maker.
+        require(order.maker != address(0), "OVa: miss maker");
+        // Order must be started and not be expired.
+
+        if (!isSkipExpiry) { // Skip expiry check if true.
+            require(
+                order.expiry == 0 || order.expiry > block.timestamp,
+                "OVa: expired"
+            );
+        }
+        // Order salt cannot be 0.
+        require(order.salt != 0, "OVa: zero salt");
+
+        if (order.side == LibOrder.Side.List) {
+            require(
+                order.nft.collection != address(0),
+                "OVa: unsupported nft asset"
+            );
+        } else if (order.side == LibOrder.Side.Bid) {
+            require(Price.unwrap(order.price) > 0, "OVa: zero price");
+        }
+    }
+
+    function _updateFilledAmount(
+        uint256 newAmount,
+        OrderKey orderKey
+    ) internal {
+        require(newAmount != CANCELLED, "OVa: canceled");
+        filledAmount[orderKey] = newAmount;
+    }
     
 }

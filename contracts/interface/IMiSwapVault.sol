@@ -5,15 +5,15 @@ import {LibOrder, OrderKey} from "../libraries/LibOrder.sol";
 
 interface IMiSwapVault {
     // Get balance of an order
-    function balanceOf(OrderKey OrderKey) external view returns (uint256 ETHAmount, uint256 tokenId);
+    function balanceOf(OrderKey orderKey) external view returns (uint256 ETHAmount, uint256 tokenId);
     // Deposit ETH to an order
-    function depositETH(OrderKey OrderKey, uint256 ETHAmount) external payable;
+    function depositETH(OrderKey orderKey, uint256 ETHAmount) external payable;
     // Withdraw ETH from an order
-    function withdrawETH(OrderKey OrderKey, uint256 ETHAmount, address to) external;
+    function withdrawETH(OrderKey orderKey, uint256 ETHAmount, address to) external;
     // Deposit NFT to the order when creating a list order
-    function depositNFT(OrderKey OrderKey, uint256 tokenId,address from, address collection) external;
+    function depositNFT(OrderKey orderKey, uint256 tokenId,address from, address collection) external;
     // Withdraw NFT from the order when the order is canceled
-    function withdrawNFT(OrderKey OrderKey, address to, address collection, uint256 tokenId) external;
+    function withdrawNFT(OrderKey orderKey, address to, address collection, uint256 tokenId) external;
     // Edit the order's NFT when editing the order
     function editNFT(OrderKey oldOrderKey, OrderKey newOrderKey) external;
     // Edit the order's ETH when editing the order
