@@ -33,6 +33,10 @@ contract MiSwapOrderBook is
 {
     using LibTransferSafeUpgradeable for address;
 
+    /*
+    self 变量被声明为 immutable。在代理模式中，immutable 变量存储在实现合约的字节码中，
+    而非代理的存储槽里。这通常是安全的，但 OZ 插件要求你显式确认。*/
+    /// @custom:oz-upgrades-unsafe-allow state-variable-immutable state-variable-assignment
     address private immutable self = address(this);// immutable 优先
     address private _vault;                        // 可变状态变量
     uint256[50] private __gap;                     // 必须紧贴最后
@@ -97,11 +101,11 @@ contract MiSwapOrderBook is
         string memory EIP712Version
     ) internal onlyInitializing {
         __Context_init();
-        __Ownable_init(_msgSender());
+        // __Ownable_init(_msgSender());
         __ReentrancyGuard_init();
         __Pausable_init();
         __OrderValidator_init(EIP712Name, EIP712Version);
-        __ProtocolManager_init(newProtocolShare);
+        __ProtocolManager_init(newProtocolShare, _msgSender());
         
         setVault(newVault);
     }
@@ -342,6 +346,7 @@ contract MiSwapOrderBook is
     }
 
     // 订单匹配批量
+    /// @custom:oz-upgrades-unsafe-allow delegatecall
     function matchOrders(LibOrder.MatchDetail[] calldata matchDetails) 
         external
         payable

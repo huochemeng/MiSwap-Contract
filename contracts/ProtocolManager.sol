@@ -14,11 +14,15 @@ contract ProtocolManager is Initializable, OwnableUpgradeable {
 
     event LogProtocolShareUpdated(uint128 indexed newShare);
 
-    function __ProtocolManager_init(uint128 _protocolShare) internal onlyInitializing { 
-        __ProtocolManager_init_unchained(_protocolShare);
+    function __ProtocolManager_init(uint128 _protocolShare, address initialOwner) internal onlyInitializing { 
+        //ProtocolManager.sol 继承了 OwnableUpgradeable，但在其 initialize 函数中没有调用父级的初始化器。
+        //这会导致代理合约的 owner 永远为零地址，且后续升级可能失败。
+        __ProtocolManager_init_unchained(_protocolShare,initialOwner);
     }
 
-    function __ProtocolManager_init_unchained(uint128 _protocolShare) internal onlyInitializing { 
+    function __ProtocolManager_init_unchained(uint128 _protocolShare,address initialOwner) internal onlyInitializing { 
+        // ✅ _init_unchained 必须独立、直接调用父级初始化器
+        __Ownable_init(initialOwner);
         _setProtocolShare(_protocolShare);
     }
 
