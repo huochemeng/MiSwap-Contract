@@ -17,8 +17,8 @@ contract MiSwapVault is IMiSwapVault, OwnableUpgradeable {
     mapping(OrderKey => uint256) public NFTBalance;
     uint256[50] private __gap;
 
-    modifier onlyEasySwapOrderBook() {
-        require(msg.sender == orderBook, "HV: only EasySwap OrderBook");
+    modifier onlyMiSwapOrderBook() {
+        require(msg.sender == orderBook, "HV: only MiSwap OrderBook");
         _;
     }
 
@@ -36,12 +36,12 @@ contract MiSwapVault is IMiSwapVault, OwnableUpgradeable {
         tokenId = NFTBalance[orderKey];
     }
 
-    function depositETH(OrderKey orderKey, uint256 ETHAmount) external payable {
+    function depositETH(OrderKey orderKey, uint256 ETHAmount) external payable onlyMiSwapOrderBook {
         require(msg.value >= ETHAmount, "VA:exceeds amount");
         ETHBalance[orderKey] += ETHAmount;
     }
 
-    function withdrawETH(OrderKey orderKey, uint256 ETHAmount, address to) external {
+    function withdrawETH(OrderKey orderKey, uint256 ETHAmount, address to) external onlyMiSwapOrderBook {
         // require(ETHBalance[orderKey] >= ETHAmount, "VA:insufficient balance");
         //  自 Solidity 0.8.0 起，所有算术运算默认开启溢出/下溢检查。如果 ETHAmount > ETHBalance[orderKey]，
         // 这行代码会直接 revert（抛出 Panic(0x11)），交易失败，资金不会被转出。
@@ -49,7 +49,7 @@ contract MiSwapVault is IMiSwapVault, OwnableUpgradeable {
         to.safeTransferETH(ETHAmount);// 函数已经内部处理了payable转换
     }
 
-    function depositNFT(OrderKey orderKey, uint256 tokenId,address from, address collection) external {
+    function depositNFT(OrderKey orderKey, uint256 tokenId,address from, address collection) external onlyMiSwapOrderBook {
         /**
         IDE 对 Yul Assembly 语义解析能力的天然限制.
         safeTransferETH 能跳转是因为它用的是 Solidity 高级语法，而 safeTransferNFT 的 Assembly 实现对 IDE 来说是一个语义黑盒。
@@ -59,18 +59,19 @@ contract MiSwapVault is IMiSwapVault, OwnableUpgradeable {
         NFTBalance[orderKey] = tokenId;
     }
 
-    function withdrawNFT(OrderKey orderKey, address to, address collection, uint256 tokenId) external {
+    function withdrawNFT(OrderKey orderKey, address to, address collection, uint256 tokenId) external onlyMiSwapOrderBook {
         require(NFTBalance[orderKey] == tokenId, "VA:NFT not found");
         delete NFTBalance[orderKey];
         IERC721(collection).safeTransferNFT(address(this), to, tokenId);
     }
 
-    function editNFT(OrderKey oldOrderKey, OrderKey newOrderKey) external { 
+    function editNFT(OrderKey oldOrderKey, OrderKey newOrderKey) external onlyMiSwapOrderBook { 
         NFTBalance[newOrderKey] = NFTBalance[oldOrderKey];
         delete NFTBalance[oldOrderKey];
     }
 
-    function editETH(OrderKey oldOrderKey, OrderKey newOrderKey, uint256 oldETHAmount, uint256 newETHAmount, address to) external payable { 
+    function editETH(OrderKey oldOrderKey, OrderKey newOrderKey, uint256 oldETHAmount, uint256 newETHAmount, address to) 
+        external payable onlyMiSwapOrderBook { 
         ETHBalance[oldOrderKey] = 0;
         if (oldETHAmount > newETHAmount) {
             ETHBalance[newOrderKey] = newETHAmount;
@@ -86,7 +87,7 @@ contract MiSwapVault is IMiSwapVault, OwnableUpgradeable {
         }
     }
 
-    function transferERC721(address from, address to, LibOrder.Asset calldata assets) external {
+    function transferERC721(address from, address to, LibOrder.Asset calldata assets) external onlyMiSwapOrderBook {
         // 单个调用，调用者需持有 from 的 approve/Operator 权限
         IERC721(assets.collection).safeTransferNFT(from, to, assets.tokenId);
     }
