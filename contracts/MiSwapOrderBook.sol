@@ -19,6 +19,7 @@ import {OrderStorage} from "./OrderStorage.sol";
 import {OrderValidator} from "./OrderValidator.sol";
 import {ProtocolManager} from "./ProtocolManager.sol";
 
+import "hardhat/console.sol";
 
 contract MiSwapOrderBook is 
     IMiSwapOrderBook,
@@ -114,7 +115,7 @@ contract MiSwapOrderBook is
 
     // 挂单
     function makeOrders(
-        LibOrder.Order[] calldata orders
+        LibOrder.Order[] calldata newOrders
     )
         external 
         payable
@@ -123,26 +124,27 @@ contract MiSwapOrderBook is
         nonReentrant 
         returns (OrderKey[] memory orderKeys)
     {
-        uint256 orderAmount = orders.length;
+        uint256 orderAmount = newOrders.length;
         orderKeys = new OrderKey[](orderAmount);
         uint128 ETHAmout;
-        for (uint256 i = 0; i < orderAmount; i++) {
+        for (uint256 i = 0; i < orderAmount; ++i) {
+            console.log("Current index:", i);
             // the price of bid order
             uint128 buyPrice;
-            if(orders[i].side == LibOrder.Side.Bid){
-                buyPrice = Price.unwrap(orders[i].price) * orders[i].nft.amount;
+            if(newOrders[i].side == LibOrder.Side.Bid){
+                buyPrice = Price.unwrap(newOrders[i].price) * newOrders[i].nft.amount;
             }
-
-            OrderKey newOrderKey = _makeOrderTry(orders[i], buyPrice);
+            console.log("buyPrice:", buyPrice);
+            OrderKey newOrderKey = _makeOrderTry(newOrders[i], buyPrice);
             orderKeys[i] = newOrderKey;
             // if the order is create success, the ETH amount will be transfer to vault
             if(OrderKey.unwrap(newOrderKey) != OrderKey.unwrap(LibOrder.ORDERKEY_SENTINEL)){
                 ETHAmout += buyPrice;
-            }
-            // return the remaining eth，if the eth is not enough, the transaction will be reverted
-            if(msg.value > ETHAmout){
-                _msgSender().safeTransferETH(msg.value - ETHAmout);
-            }
+            }  
+        }
+        // return the remaining eth，if the eth is not enough, the transaction will be reverted
+        if(msg.value > ETHAmout){
+            _msgSender().safeTransferETH(msg.value - ETHAmout);
         }
     }
 
@@ -156,7 +158,7 @@ contract MiSwapOrderBook is
     { 
         if(
             order.maker == _msgSender() &&
-           Price.unwrap(order.price) != 0 && // price cannot be zero
+            Price.unwrap(order.price) != 0 && // price cannot be zero
             order.salt != 0 && // salt cannot be zero
             (order.expiry > block.timestamp || order.expiry == 0) && // expiry must be greater than current block timestamp or no expiry
             filledAmount[LibOrder.hash(order)] == 0
@@ -230,8 +232,10 @@ contract MiSwapOrderBook is
                     order.nft.tokenId
                 );
             } else if (order.side == LibOrder.Side.Bid) {
+                console.log("orderKey:", uint256(OrderKey.unwrap(orderKey)));
+                console.log("filledAmount[orderKey]:", filledAmount[orderKey]);
                 uint256 availNFTAmount = order.nft.amount -
-                    filledAmount[orderKey];
+                    filledAmount[orderKey];   
                 IMiSwapVault(_vault).withdrawETH(
                     orderHash,
                     Price.unwrap(order.price) * availNFTAmount, // the withdraw amount of eth
