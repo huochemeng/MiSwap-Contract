@@ -528,7 +528,7 @@ contract MiSwapOrderBook is
     }
     
     function _shareToAmount(uint128 total, uint128 share) internal pure returns (uint128) {
-        return (total * share) / LibPayInfo.MAX_PROTOCOL_SHARE;
+        return (total * share) / LibPayInfo.TOTAL_SHARE;
     }
 
     function _isMatchAvailable(
