@@ -128,13 +128,11 @@ contract MiSwapOrderBook is
         orderKeys = new OrderKey[](orderAmount);
         uint128 ETHAmout;
         for (uint256 i = 0; i < orderAmount; ++i) {
-            console.log("Current index:", i);
             // the price of bid order
             uint128 buyPrice;
             if(newOrders[i].side == LibOrder.Side.Bid){
                 buyPrice = Price.unwrap(newOrders[i].price) * newOrders[i].nft.amount;
             }
-            console.log("buyPrice:", buyPrice);
             OrderKey newOrderKey = _makeOrderTry(newOrders[i], buyPrice);
             orderKeys[i] = newOrderKey;
             // if the order is create success, the ETH amount will be transfer to vault
@@ -307,6 +305,8 @@ contract MiSwapOrderBook is
             emit LogSkipOrder(oldOrderKey, newOrder.salt);
             return (LibOrder.ORDERKEY_SENTINEL, 0);
         }
+        // 在删除订单之前，拿到之前的订单已成交的订单数量
+        uint256 oldFilledAmount = filledAmount[oldOrderKey];
         // cancel old order
         // remove old order from order storage
         _removeOrder(oldOrder);
@@ -315,7 +315,6 @@ contract MiSwapOrderBook is
         emit LogCancel(oldOrderKey, oldOrder.maker);
         // add new order to order book
         newOrderKey = _addOrder(newOrder);
-        uint256 oldFilledAmount = filledAmount[oldOrderKey];
         //  make new order
         if(oldOrder.side == LibOrder.Side.List) {
             IMiSwapVault(_vault).editNFT(oldOrderKey, newOrderKey);
