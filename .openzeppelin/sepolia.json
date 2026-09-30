@@ -1,0 +1,649 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xA466143aA2D3c309e04a06c251DB574ce261417E",
+      "txHash": "0xbc9697dc0bf5f801245d7885d007d77e97b01ef616154b47d0765de870d2c1a2",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6119a211B580F9c6cF65Ee82EaeD7489EdF3de3E",
+      "txHash": "0xaea1529588757599f7786358c967843bacb8c5107b459a4b436ce73df86eeee4",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "c7d51874206ecfbac9d53f8252cf2113b63305d377e450ed0d353e8918f6fd59": {
+      "address": "0x0137c1eE6fa6C47ee657f5a33bdED4238CFdf8f6",
+      "txHash": "0xfe3e9678bfea0536dd8625443d31e3b126bb7a04fcf3f085a7e3724ff3433e79",
+      "layout": {
+        "solcVersion": "0.8.34",
+        "storage": [
+          {
+            "label": "orderBook",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "MiSwapVault",
+            "src": "project\\contracts\\MiSwapVault.sol:15"
+          },
+          {
+            "label": "ETHBalance",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_userDefinedValueType(OrderKey)16055,t_uint256)",
+            "contract": "MiSwapVault",
+            "src": "project\\contracts\\MiSwapVault.sol:16"
+          },
+          {
+            "label": "NFTBalance",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_userDefinedValueType(OrderKey)16055,t_uint256)",
+            "contract": "MiSwapVault",
+            "src": "project\\contracts\\MiSwapVault.sol:17"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "MiSwapVault",
+            "src": "project\\contracts\\MiSwapVault.sol:18"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)86_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_mapping(t_userDefinedValueType(OrderKey)16055,t_uint256)": {
+            "label": "mapping(OrderKey => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_userDefinedValueType(OrderKey)16055": {
+            "label": "OrderKey",
+            "numberOfBytes": "32",
+            "underlying": "t_bytes32"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "061ef424c47138d34292c62d892a18f665c9360edb5e7f7bdd482bf699dad956": {
+      "address": "0x7bEBa6f5cFB2313fB2BA6cECd28f351A4761A4cD",
+      "txHash": "0x39361b69659f2e871604cbecde0c45000c2fd4dfe7a60be062b8ca583d91f919",
+      "layout": {
+        "solcVersion": "0.8.34",
+        "storage": [
+          {
+            "label": "orders",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_userDefinedValueType(OrderKey)15612,t_struct(DBOrder)15656_storage)",
+            "contract": "OrderStorage",
+            "src": "project\\contracts\\OrderStorage.sol:15"
+          },
+          {
+            "label": "priceTrees",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_mapping(t_enum(Side)15615,t_struct(Tree)16014_storage))",
+            "contract": "OrderStorage",
+            "src": "project\\contracts\\OrderStorage.sol:18"
+          },
+          {
+            "label": "orderQueues",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_mapping(t_enum(Side)15615,t_mapping(t_userDefinedValueType(Price)15992,t_struct(OrderQueue)15663_storage)))",
+            "contract": "OrderStorage",
+            "src": "project\\contracts\\OrderStorage.sol:22"
+          },
+          {
+            "label": "filledAmount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_userDefinedValueType(OrderKey)15612,t_uint256)",
+            "contract": "OrderValidator",
+            "src": "project\\contracts\\OrderValidator.sol:26"
+          },
+          {
+            "label": "protocolShare",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint128",
+            "contract": "ProtocolManager",
+            "src": "project\\contracts\\ProtocolManager.sol:12"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ProtocolManager",
+            "src": "project\\contracts\\ProtocolManager.sol:13"
+          },
+          {
+            "label": "_vault",
+            "offset": 0,
+            "slot": "55",
+            "type": "t_address",
+            "contract": "MiSwapOrderBook",
+            "src": "project\\contracts\\MiSwapOrderBook.sol:44"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "56",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "MiSwapOrderBook",
+            "src": "project\\contracts\\MiSwapOrderBook.sol:47"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(EIP712Storage)915_storage": {
+            "label": "struct EIP712Upgradeable.EIP712Storage",
+            "members": [
+              {
+                "label": "_hashedName",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_hashedVersion",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "_name",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "_version",
+                "type": "t_string_storage",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(InitializableStorage)86_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(PausableStorage)769_storage": {
+            "label": "struct PausableUpgradeable.PausableStorage",
+            "members": [
+              {
+                "label": "_paused",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(ReentrancyGuardStorage)846_storage": {
+            "label": "struct ReentrancyGuardUpgradeable.ReentrancyGuardStorage",
+            "members": [
+              {
+                "label": "_status",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_enum(SaleKind)15618": {
+            "label": "enum LibOrder.SaleKind",
+            "members": [
+              "FixedPriceForCollection",
+              "FixedPriceForItem"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_enum(Side)15615": {
+            "label": "enum LibOrder.Side",
+            "members": [
+              "List",
+              "Bid"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_mapping(t_enum(Side)15615,t_mapping(t_userDefinedValueType(Price)15992,t_struct(OrderQueue)15663_storage)))": {
+            "label": "mapping(address => mapping(enum LibOrder.Side => mapping(Price => struct LibOrder.OrderQueue)))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_mapping(t_enum(Side)15615,t_struct(Tree)16014_storage))": {
+            "label": "mapping(address => mapping(enum LibOrder.Side => struct RedBlackTreeLibrary.Tree))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_enum(Side)15615,t_mapping(t_userDefinedValueType(Price)15992,t_struct(OrderQueue)15663_storage))": {
+            "label": "mapping(enum LibOrder.Side => mapping(Price => struct LibOrder.OrderQueue))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_enum(Side)15615,t_struct(Tree)16014_storage)": {
+            "label": "mapping(enum LibOrder.Side => struct RedBlackTreeLibrary.Tree)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_userDefinedValueType(OrderKey)15612,t_struct(DBOrder)15656_storage)": {
+            "label": "mapping(OrderKey => struct LibOrder.DBOrder)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_userDefinedValueType(OrderKey)15612,t_uint256)": {
+            "label": "mapping(OrderKey => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_userDefinedValueType(Price)15992,t_struct(Node)16004_storage)": {
+            "label": "mapping(Price => struct RedBlackTreeLibrary.Node)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_userDefinedValueType(Price)15992,t_struct(OrderQueue)15663_storage)": {
+            "label": "mapping(Price => struct LibOrder.OrderQueue)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Asset)15625_storage": {
+            "label": "struct LibOrder.Asset",
+            "members": [
+              {
+                "label": "tokenId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "collection",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "amount",
+                "type": "t_uint96",
+                "offset": 20,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(DBOrder)15656_storage": {
+            "label": "struct LibOrder.DBOrder",
+            "members": [
+              {
+                "label": "order",
+                "type": "t_struct(Order)15649_storage",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "next",
+                "type": "t_userDefinedValueType(OrderKey)15612",
+                "offset": 0,
+                "slot": "4"
+              }
+            ],
+            "numberOfBytes": "160"
+          },
+          "t_struct(Node)16004_storage": {
+            "label": "struct RedBlackTreeLibrary.Node",
+            "members": [
+              {
+                "label": "parent",
+                "type": "t_userDefinedValueType(Price)15992",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "left",
+                "type": "t_userDefinedValueType(Price)15992",
+                "offset": 16,
+                "slot": "0"
+              },
+              {
+                "label": "right",
+                "type": "t_userDefinedValueType(Price)15992",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "red",
+                "type": "t_uint8",
+                "offset": 16,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Order)15649_storage": {
+            "label": "struct LibOrder.Order",
+            "members": [
+              {
+                "label": "side",
+                "type": "t_enum(Side)15615",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "saleKind",
+                "type": "t_enum(SaleKind)15618",
+                "offset": 1,
+                "slot": "0"
+              },
+              {
+                "label": "maker",
+                "type": "t_address",
+                "offset": 2,
+                "slot": "0"
+              },
+              {
+                "label": "nft",
+                "type": "t_struct(Asset)15625_storage",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "price",
+                "type": "t_userDefinedValueType(Price)15992",
+                "offset": 0,
+                "slot": "3"
+              },
+              {
+                "label": "expiry",
+                "type": "t_uint64",
+                "offset": 16,
+                "slot": "3"
+              },
+              {
+                "label": "salt",
+                "type": "t_uint64",
+                "offset": 24,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_struct(OrderQueue)15663_storage": {
+            "label": "struct LibOrder.OrderQueue",
+            "members": [
+              {
+                "label": "head",
+                "type": "t_userDefinedValueType(OrderKey)15612",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tail",
+                "type": "t_userDefinedValueType(OrderKey)15612",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_struct(Tree)16014_storage": {
+            "label": "struct RedBlackTreeLibrary.Tree",
+            "members": [
+              {
+                "label": "root",
+                "type": "t_userDefinedValueType(Price)15992",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "nodes",
+                "type": "t_mapping(t_userDefinedValueType(Price)15992,t_struct(Node)16004_storage)",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint128": {
+            "label": "uint128",
+            "numberOfBytes": "16"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          },
+          "t_uint96": {
+            "label": "uint96",
+            "numberOfBytes": "12"
+          },
+          "t_userDefinedValueType(OrderKey)15612": {
+            "label": "OrderKey",
+            "numberOfBytes": "32",
+            "underlying": "t_bytes32"
+          },
+          "t_userDefinedValueType(Price)15992": {
+            "label": "Price",
+            "numberOfBytes": "16",
+            "underlying": "t_uint128"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.EIP712": [
+            {
+              "contract": "EIP712Upgradeable",
+              "label": "_hashedName",
+              "type": "t_bytes32",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\utils\\cryptography\\EIP712Upgradeable.sol:39",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "EIP712Upgradeable",
+              "label": "_hashedVersion",
+              "type": "t_bytes32",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\utils\\cryptography\\EIP712Upgradeable.sol:41",
+              "offset": 0,
+              "slot": "1"
+            },
+            {
+              "contract": "EIP712Upgradeable",
+              "label": "_name",
+              "type": "t_string_storage",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\utils\\cryptography\\EIP712Upgradeable.sol:43",
+              "offset": 0,
+              "slot": "2"
+            },
+            {
+              "contract": "EIP712Upgradeable",
+              "label": "_version",
+              "type": "t_string_storage",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\utils\\cryptography\\EIP712Upgradeable.sol:44",
+              "offset": 0,
+              "slot": "3"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Pausable": [
+            {
+              "contract": "PausableUpgradeable",
+              "label": "_paused",
+              "type": "t_bool",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\utils\\PausableUpgradeable.sol:21",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\utils\\ReentrancyGuardUpgradeable.sol:40",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "npm\\@openzeppelin\\contracts-upgradeable@5.0.0\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
