@@ -19,7 +19,6 @@ import {OrderStorage} from "./OrderStorage.sol";
 import {OrderValidator} from "./OrderValidator.sol";
 import {ProtocolManager} from "./ProtocolManager.sol";
 
-import "hardhat/console.sol";
 
 contract MiSwapOrderBook is 
     IMiSwapOrderBook,
@@ -230,9 +229,7 @@ contract MiSwapOrderBook is
                     order.nft.tokenId
                 );
             } else if (order.side == LibOrder.Side.Bid) {
-                console.log("orderKey:", uint256(OrderKey.unwrap(orderKey)));
-                console.log("filledAmount[orderKey]:", filledAmount[orderKey]);
-                uint256 availNFTAmount = order.nft.amount -
+                                uint256 availNFTAmount = order.nft.amount -
                     filledAmount[orderKey];   
                 IMiSwapVault(_vault).withdrawETH(
                     orderHash,
@@ -582,6 +579,19 @@ contract MiSwapOrderBook is
     }
 
     receive() external payable {}
+
+    /// @notice Recover ETH held by the contract (protocol fees retained from
+    /// matched orders, or ETH sent here by accident) to a chosen address.
+    /// @dev Access is restricted to the owner; reentrancy-guarded like the
+    /// other value-moving entry points.
+    function recoverETH(address payable to, uint256 amount)
+        external
+        onlyOwner
+        nonReentrant
+    {
+        require(to != address(0), "MiSwapOrderBook: zero address");
+        to.safeTransferETH(amount);
+    }
 
     
 
